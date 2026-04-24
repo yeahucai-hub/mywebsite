@@ -8,7 +8,45 @@
   /* 前面一大堆CSS */
 
   footer span{color:#334155;margin:0 6px}
+/* 手机端导航优化 */
+.menu-toggle{
+  display:none;
+  font-size:22px;
+  cursor:pointer;
+}
 
+/* 小屏幕 */
+@media(max-width:768px){
+
+  .nav-links{
+    display:none;
+    position:absolute;
+    top:64px;
+    left:0;
+    width:100%;
+    background:#0a0f1e;
+    flex-direction:column;
+    gap:0;
+    padding:20px;
+  }
+
+  .nav-links a{
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+
+  .nav-cta{
+    display:none;
+  }
+
+  .menu-toggle{
+    display:block;
+  }
+
+  .nav-inner{
+    justify-content:space-between;
+  }
+}
   /* ✅ 你加在这里 */
   @media(max-width:600px){
     .logo-text{
@@ -131,14 +169,30 @@ section{padding:80px 5%}
 /* FOOTER */
 footer{padding:32px 5%;border-top:1px solid rgba(255,255,255,0.07);text-align:center;color:#475569;font-size:13px}
 footer span{color:#334155;margin:0 6px}
-</style>
-</head>
-<body>
+<!-- JS 放这里 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-Links');
 
-<!-- NAV -->
+    if (!toggleBtn || !navLinks) {
+      console.warn('菜单切换元素未找到，请检查 class 名是否正确');
+      return;
+    }
+
+    toggleBtn.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+    });
+  });
+</script>
+<!-- Navigation -->
 <nav>
   <div class="nav-inner">
- <div class="logo">
+    <div class="logo">
+      Logo
+    </div>
+  </div>
+</nav>
   <img src="logo.png" style="height:36px;">
   <div>
     <div class="logo-text">FlowMind AI <span class="lang-badge">知量科技</span></div>
