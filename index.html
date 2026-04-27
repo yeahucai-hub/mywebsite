@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>>Zillionera 人工智能</title>
-<style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Zillionera 人工智能</title>
+  <style>
+    /* 原有全部 CSS 样式，比如 nav, hero, section ... */
+    body{font-family:'PingFang SC','Microsoft YaHei',sans-serif; ... }
+
+    /* HERO */
+    .hero { ... }
+
+    /* SECTION */
+    section { ... }
+
+    /* SOLUTIONS, PAIN POINTS ... */
+    .sol-grid { ... }
+    .pain-grid { ... }
+
+    /* ===== 手机屏幕适配 ===== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .menu-toggle { display: block; }
+      .logo-text { font-size: 14px; }
+      .logo-sub { display: none; }
+      .logo img { height: 28px; }
+      .hero h1 { font-size: clamp(24px,5vw,36px); }
+      .hero h1 .en { font-size: clamp(14px,2.5vw,20px); }
+      .hero-sub { font-size: clamp(12px,1.5vw,15px); }
+      .hero-btns { flex-direction: column; gap: 10px; }
+      .hero-stats { flex-direction: column; gap: 20px; }
+      section { padding: 40px 5%; }
+      .pain-grid, .sol-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e8eaf0;line-height:1.7}
 a{color:inherit;text-decoration:none}
