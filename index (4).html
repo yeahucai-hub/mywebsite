@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FlowMind AI 智能流程解决方案</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+  background:#0a1020;
+  color:#eef2ff;
+  line-height:1.65;
+}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+
+:root{
+  --bg:#0a1020;
+  --bg-soft:#10182d;
+  --panel:#121a2b;
+  --line:rgba(255,255,255,.08);
+  --muted:#97a4bf;
+  --muted-2:#6e7b95;
+  --brand:#4a84ff;
+  --brand-2:#7a41ff;
+  --brand-red:#df0a3a;
+  --max:1160px;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 0, rgba(74,132,255,.15), transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,.02), transparent 220px);
+}
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(10,16,32,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.nav-inner{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:14px 24px;
+  display:flex;
+  align-items:center;
+  gap:24px;
+}
+.brand{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex:1 1 auto;
+}
+.brand-mark{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.brand-mark svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.brand-copy{
+  min-width:0;
+}
+.brand-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.brand-name{
+  font-size:20px;
+  line-height:1.1;
+  font-weight:800;
+  letter-spacing:0;
+}
+.brand-badge{
+  display:inline-flex;
+  align-items:center;
+  height:28px;
+  padding:0 10px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.03);
+  color:#d3dcf2;
+  font-size:12px;
+}
+.brand-sub{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:13px;
+}
+.nav-toggle{display:none}
+.nav-menu-btn{
+  display:none;
+  width:46px;
+  height:46px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 46px;
+}
+.nav-menu-btn span,
+.nav-menu-btn::before,
+.nav-menu-btn::after{
+  content:"";
+  display:block;
+  width:18px;
+  height:2px;
+  background:#ecf0ff;
+  border-radius:999px;
+  transition:.2s ease;
+}
+.nav-menu-btn span{margin:4px 0}
+.nav-links{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px 34px;
+  flex:0 1 auto;
+  color:#c7d1e8;
+  font-size:14px;
+}
+.nav-links a:hover{color:#fff}
+.nav-cta{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:160px;
+  height:56px;
+  padding:0 22px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+  box-shadow:0 14px 28px rgba(78,98,255,.18);
+}
+
+.hero{
+  padding:88px 24px 56px;
+}
+.hero-wrap{
+  max-width:var(--max);
+  margin:0 auto;
+}
+.hero-card{
+  max-width:760px;
+  margin:0 auto;
+  text-align:center;
+}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:18px;
+  padding:7px 14px;
+  border-radius:999px;
+  border:1px solid rgba(74,132,255,.24);
+  background:rgba(74,132,255,.08);
+  color:#a8c4ff;
+  font-size:12px;
+}
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--brand);
+}
+.hero h1{
+  font-size:clamp(34px,5vw,72px);
+  line-height:1.08;
+  letter-spacing:0;
+  font-weight:900;
+  margin-bottom:18px;
+  background:linear-gradient(135deg,#ffffff 10%,#d9e7ff 70%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero p{
+  max-width:660px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:clamp(15px,1.5vw,18px);
+}
+.hero-actions{
+  margin-top:34px;
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.btn-primary,
+.btn-secondary{
+  min-width:230px;
+  height:66px;
+  padding:0 26px;
+  border-radius:14px;
+  border:1px solid transparent;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:800;
+}
+.btn-primary{
+  color:#fff;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  box-shadow:0 18px 30px rgba(87,84,255,.18);
+}
+.btn-secondary{
+  color:#fff;
+  background:rgba(255,255,255,.02);
+  border-color:rgba(255,255,255,.12);
+}
+.hero-stats{
+  margin-top:42px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:18px;
+}
+.stat{
+  min-height:136px;
+  padding:28px 18px 22px;
+  border-radius:22px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  text-align:center;
+}
+.stat-value{
+  font-size:56px;
+  line-height:1;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--brand),#7652ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.stat-label{
+  margin-top:16px;
+  color:#9eabc6;
+  font-size:15px;
+}
+
+section{
+  padding:72px 24px;
+}
+.band{background:#09101d}
+.inner{
+  max-width:var(--max);
+  margin:0 auto;
+}
+.sec-kicker{
+  color:var(--brand);
+  font-size:12px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+.sec-title{
+  margin-top:14px;
+  font-size:clamp(28px,3.6vw,46px);
+  line-height:1.2;
+  font-weight:850;
+}
+.sec-copy{
+  margin-top:14px;
+  max-width:740px;
+  color:var(--muted);
+  font-size:16px;
+}
+.grid-3{
+  margin-top:38px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.grid-2{
+  margin-top:38px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+.card{
+  padding:24px;
+  border-radius:22px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+}
+.card h3{
+  font-size:18px;
+  margin-bottom:10px;
+}
+.card p{
+  color:var(--muted);
+  font-size:14px;
+}
+.process{
+  margin-top:38px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+.step{
+  padding:22px 18px;
+  border-radius:20px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  text-align:center;
+}
+.step-no{
+  width:42px;
+  height:42px;
+  margin:0 auto 14px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:800;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+}
+.contact{
+  text-align:center;
+}
+.contact-form{
+  max-width:860px;
+  margin:32px auto 0;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr)) auto;
+  gap:14px;
+}
+.contact-form input{
+  width:100%;
+  height:58px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  color:#eef2ff;
+  padding:0 16px;
+}
+.contact-form button{
+  height:58px;
+  min-width:150px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  color:#fff;
+  font-weight:800;
+}
+footer{
+  padding:28px 24px 34px;
+  border-top:1px solid rgba(255,255,255,.06);
+  color:#8290ab;
+  text-align:center;
+  font-size:13px;
+}
+
+@media (max-width: 1120px){
+  .nav-inner{padding:14px 20px}
+  .nav-links{gap:12px 24px;font-size:13px}
+  .nav-cta{min-width:138px}
+  .hero-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-3,.process{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .contact-form{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media (max-width: 768px){
+  nav{
+    position:sticky;
+    top:0;
+  }
+  .nav-inner{
+    padding:14px 14px 12px;
+    align-items:flex-start;
+    gap:0;
+    flex-wrap:wrap;
+  }
+  .brand{
+    max-width:calc(100% - 58px);
+    gap:10px;
+    align-items:flex-start;
+  }
+  .brand-mark{
+    width:40px;
+    height:40px;
+    flex-basis:40px;
+  }
+  .brand-top{
+    gap:7px;
+    align-items:center;
+  }
+  .brand-name{
+    font-size:17px;
+    line-height:1;
+  }
+  .brand-badge{
+    height:24px;
+    padding:0 8px;
+    font-size:11px;
+    border-radius:8px;
+  }
+  .brand-sub{
+    font-size:10px;
+    margin-top:6px;
+    color:#93a2bc;
+  }
+  .nav-menu-btn{
+    display:flex;
+    margin-left:auto;
+    width:42px;
+    height:42px;
+    flex-basis:42px;
+    border-radius:13px;
+  }
+  .nav-links,
+  .nav-cta{
+    display:none;
+    width:100%;
+  }
+  .nav-links{
+    padding-top:14px;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0;
+  }
+  .nav-links a{
+    width:100%;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    font-size:15px;
+  }
+  .nav-cta{
+    min-width:0;
+    margin-top:12px;
+    height:52px;
+  }
+  .nav-toggle:checked ~ .nav-links,
+  .nav-toggle:checked ~ .nav-cta{
+    display:flex;
+  }
+  .nav-toggle:checked + .nav-menu-btn::before{
+    transform:translateY(6px) rotate(45deg);
+  }
+  .nav-toggle:checked + .nav-menu-btn span{
+    opacity:0;
+  }
+  .nav-toggle:checked + .nav-menu-btn::after{
+    transform:translateY(-6px) rotate(-45deg);
+  }
+  .hero{
+    padding:36px 14px 24px;
+  }
+  .hero-card{
+    max-width:100%;
+  }
+  .hero-badge{
+    margin-bottom:18px;
+    padding:8px 14px;
+    font-size:11px;
+  }
+  .hero h1{
+    font-size:24px;
+    line-height:1.18;
+    margin-bottom:16px;
+  }
+  .hero p{
+    max-width:100%;
+    font-size:13px;
+    line-height:1.72;
+    color:#a4b0c7;
+  }
+  .hero-actions{
+    margin-top:28px;
+    gap:16px;
+    flex-direction:column;
+  }
+  .btn-primary,
+  .btn-secondary{
+    width:100%;
+    min-width:0;
+    height:66px;
+    border-radius:18px;
+    font-size:15px;
+  }
+  .hero-stats{
+    grid-template-columns:1fr;
+    gap:18px;
+    margin-top:26px;
+  }
+  .stat{
+    min-height:0;
+    padding:24px 18px 22px;
+    border-radius:24px;
+  }
+  .stat-value{
+    font-size:42px;
+  }
+  .stat-label{
+    margin-top:12px;
+    font-size:13px;
+  }
+  section{
+    padding:52px 14px;
+  }
+  .sec-kicker{
+    letter-spacing:2px;
+  }
+  .sec-title{
+    font-size:20px;
+    line-height:1.35;
+  }
+  .sec-copy{
+    font-size:14px;
+    max-width:none;
+  }
+  .grid-3,
+  .grid-2,
+  .process,
+  .contact-form{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .card,
+  .step{
+    padding:20px 18px;
+    border-radius:18px;
+  }
+}
+
+@media (max-width: 480px){
+  .nav-inner{
+    padding:12px 12px 10px;
+  }
+  .brand{
+    max-width:calc(100% - 52px);
+  }
+  .brand-name{
+    font-size:16px;
+  }
+  .brand-badge{
+    height:23px;
+    padding:0 7px;
+    font-size:10px;
+  }
+  .brand-sub{
+    font-size:10px;
+  }
+  .nav-menu-btn{
+    width:40px;
+    height:40px;
+    flex-basis:40px;
+  }
+  .hero{
+    padding:34px 12px 20px;
+  }
+  .hero h1{
+    font-size:21px;
+  }
+  .hero p{
+    font-size:12px;
+  }
+  .hero-badge{
+    font-size:10px;
+    padding:7px 12px;
+  }
+  .btn-primary,
+  .btn-secondary{
+    height:64px;
+    font-size:14px;
+  }
+  .stat{
+    padding:22px 16px 20px;
+  }
+  .stat-value{
+    font-size:40px;
+  }
+  .stat-label{
+    font-size:12px;
+  }
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M34 20H198L189 38H99L141 38L73 182H185L176 200H16L110 56H25L34 20Z" fill="#DF0A3A"/>
+        </svg>
+      </div>
+      <div class="brand-copy">
+        <div class="brand-top">
+          <div class="brand-name">FlowMind AI</div>
+          <span class="brand-badge">知量科技</span>
+        </div>
+        <div class="brand-sub">Konwlequant Technologies</div>
+      </div>
+    </div>
+    <input id="nav-toggle" class="nav-toggle" type="checkbox" />
+    <label class="nav-menu-btn" for="nav-toggle" aria-label="打开导航菜单"><span></span></label>
+    <div class="nav-links">
+      <a href="#pain">痛点 / Pain Points</a>
+      <a href="#solutions">方案 / Solutions</a>
+      <a href="#clients">客群 / Clients</a>
+      <a href="#contact">联系 / Contact</a>
+    </div>
+    <a class="nav-cta" href="#contact">预约演示 / Demo</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-wrap">
+    <div class="hero-card">
+      <div class="hero-badge"><span class="dot"></span>AI-Powered · 智能驱动流程革新</div>
+      <h1>用 AI 系统化解决政府与企业的流程管理难题</h1>
+      <p>FlowMind AI 以人工智能为核心引擎，深入连接审批、协同、数据分析与运营管理全链路，帮助组织识别瓶颈、提升效率、降低成本，并更快落地数字化升级。</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="location.href='#contact'">预约免费演示</button>
+        <button class="btn-secondary" onclick="location.href='#solutions'">查看解决方案</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-value">85%</div>
+          <div class="stat-label">平均流程效率提升</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">60%</div>
+          <div class="stat-label">人工操作成本下降</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">200+</div>
+          <div class="stat-label">落地项目</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">48h</div>
+          <div class="stat-label">快速接入</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pain" class="band">
+  <div class="inner">
+    <div class="sec-kicker">Pain Points</div>
+    <div class="sec-title">这些流程问题，是否也在拖慢你的组织效率？</div>
+    <div class="sec-copy">我们聚焦政府机构与企业在数字化升级中最常见的流程阻塞，用更低门槛的 AI 能力，帮助业务真正跑起来。</div>
+    <div class="grid-3">
+      <div class="card"><h3>审批链路过长</h3><p>多层审批、纸质流转和跨部门协同缓慢，导致事项推进周期长、响应速度低。</p></div>
+      <div class="card"><h3>数据孤岛严重</h3><p>系统之间互不连通，数据无法共享，管理层缺少统一视图和及时洞察。</p></div>
+      <div class="card"><h3>重复事务过多</h3><p>录入、核对、整理、制表等机械性工作过多，核心团队被低价值任务占用。</p></div>
+      <div class="card"><h3>业务响应偏慢</h3><p>缺少实时分析与预测支持，异常、反馈和变化很难快速转化为行动。</p></div>
+      <div class="card"><h3>合规风险难控</h3><p>规则变化频繁，人工审核难覆盖，潜在问题往往发现得太晚。</p></div>
+      <div class="card"><h3>数字化落地困难</h3><p>改造周期长、投入高、兼容复杂，很多项目上线后仍难形成有效结果。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="solutions">
+  <div class="inner">
+    <div class="sec-kicker">Solutions</div>
+    <div class="sec-title">围绕真实业务场景设计的 AI 解决方案</div>
+    <div class="sec-copy">从自动化执行到智能决策，我们提供可快速部署、可逐步接入、可持续扩展的一体化能力组合。</div>
+    <div class="grid-3">
+      <div class="card"><h3>智能流程自动化</h3><p>自动识别审批、报送、归档、同步等高频流程，让重复工作从人工转为系统执行。</p></div>
+      <div class="card"><h3>统一数据融合</h3><p>打通分散系统和业务数据，建立统一视图，为管理层提供实时分析和决策依据。</p></div>
+      <div class="card"><h3>AI 辅助决策</h3><p>结合行业知识和大模型能力，辅助完成分析、总结、问答、研判和建议生成。</p></div>
+      <div class="card"><h3>智能合规风控</h3><p>自动追踪规则变化，识别异常流程和潜在违规事项，帮助组织提前发现风险。</p></div>
+      <div class="card"><h3>经营增长助手</h3><p>整合客户、销售和市场数据，支持线索分析、策略建议、效果复盘与增长优化。</p></div>
+      <div class="card"><h3>低门槛快速接入</h3><p>支持标准接口与灵活配置，不必替换原有系统，也能完成关键流程智能升级。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="inner">
+    <div class="sec-kicker">Process</div>
+    <div class="sec-title">四步完成从诊断到落地</div>
+    <div class="process">
+      <div class="step"><div class="step-no">01</div><h3>流程诊断</h3><p>梳理现有链路，识别关键卡点与重复劳动。</p></div>
+      <div class="step"><div class="step-no">02</div><h3>方案定制</h3><p>结合组织目标，配置合适的自动化与 AI 能力。</p></div>
+      <div class="step"><div class="step-no">03</div><h3>快速部署</h3><p>对接原有系统与数据源，小步上线，优先覆盖高价值场景。</p></div>
+      <div class="step"><div class="step-no">04</div><h3>持续优化</h3><p>根据使用数据和业务反馈迭代，让效率提升稳定发生。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="clients">
+  <div class="inner">
+    <div class="sec-kicker">Clients</div>
+    <div class="sec-title">面向政府与企业的多场景服务能力</div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>政府机构</h3>
+        <p>行政审批自动化、跨部门数据协同、政策合规审查、公共服务流程优化、辅助政策制定与效果评估。</p>
+      </div>
+      <div class="card">
+        <h3>企业组织</h3>
+        <p>供应链和采购流程优化、经营数据实时分析、客户管理与营销自动化、财务人力流程数字化、风险监控增强。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="band">
+  <div class="inner contact">
+    <div class="sec-kicker">Contact</div>
+    <div class="sec-title">现在开始，用 AI 重塑你的流程效率</div>
+    <div class="sec-copy">留下信息，我们将在 48 小时内与你联系，提供适合你业务场景的演示建议。</div>
+    <div class="contact-form">
+      <input type="text" placeholder="姓名" />
+      <input type="text" placeholder="企业或机构名称" />
+      <input type="email" placeholder="电子邮箱" />
+      <button type="button">预约演示</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 FlowMind AI · Konwlequant Technologies · contact@flowmind.ai
+</footer>
+</body>
+</html>
