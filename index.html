@@ -1,736 +1,876 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>FlowMind AI 智能流程解决方案</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  font-family:"PingFang SC","Microsoft YaHei",sans-serif;
-  background:#0a1020;
-  color:#eef2ff;
-  line-height:1.65;
-}
-a{color:inherit;text-decoration:none}
-button,input{font:inherit}
-
-:root{
-  --bg:#0a1020;
-  --bg-soft:#10182d;
-  --panel:#121a2b;
-  --line:rgba(255,255,255,.08);
-  --muted:#97a4bf;
-  --muted-2:#6e7b95;
-  --brand:#4a84ff;
-  --brand-2:#7a41ff;
-  --brand-red:#df0a3a;
-  --max:1160px;
-}
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 50% 0, rgba(74,132,255,.15), transparent 36%),
-    linear-gradient(180deg, rgba(255,255,255,.02), transparent 220px);
-}
-
-nav{
-  position:sticky;
-  top:0;
-  z-index:20;
-  background:rgba(10,16,32,.94);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-.nav-inner{
-  max-width:var(--max);
-  margin:0 auto;
-  padding:14px 24px;
-  display:flex;
-  align-items:center;
-  gap:24px;
-}
-.brand{
-  min-width:0;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  flex:1 1 auto;
-}
-.brand-mark{
-  width:44px;
-  height:44px;
-  flex:0 0 44px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.brand-mark svg{
-  width:100%;
-  height:100%;
-  display:block;
-}
-.brand-copy{
-  min-width:0;
-}
-.brand-top{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.brand-name{
-  font-size:20px;
-  line-height:1.1;
-  font-weight:800;
-  letter-spacing:0;
-}
-.brand-badge{
-  display:inline-flex;
-  align-items:center;
-  height:28px;
-  padding:0 10px;
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.03);
-  color:#d3dcf2;
-  font-size:12px;
-}
-.brand-sub{
-  margin-top:4px;
-  color:var(--muted);
-  font-size:13px;
-}
-.nav-toggle{display:none}
-.nav-menu-btn{
-  display:none;
-  width:46px;
-  height:46px;
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:14px;
-  align-items:center;
-  justify-content:center;
-  flex:0 0 46px;
-}
-.nav-menu-btn span,
-.nav-menu-btn::before,
-.nav-menu-btn::after{
-  content:"";
-  display:block;
-  width:18px;
-  height:2px;
-  background:#ecf0ff;
-  border-radius:999px;
-  transition:.2s ease;
-}
-.nav-menu-btn span{margin:4px 0}
-.nav-links{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:16px 34px;
-  flex:0 1 auto;
-  color:#c7d1e8;
-  font-size:14px;
-}
-.nav-links a:hover{color:#fff}
-.nav-cta{
-  flex:0 0 auto;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:160px;
-  height:56px;
-  padding:0 22px;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--brand),var(--brand-2));
-  color:#fff;
-  font-size:14px;
-  font-weight:700;
-  box-shadow:0 14px 28px rgba(78,98,255,.18);
-}
-
-.hero{
-  padding:88px 24px 56px;
-}
-.hero-wrap{
-  max-width:var(--max);
-  margin:0 auto;
-}
-.hero-card{
-  max-width:760px;
-  margin:0 auto;
-  text-align:center;
-}
-.hero-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  margin-bottom:18px;
-  padding:7px 14px;
-  border-radius:999px;
-  border:1px solid rgba(74,132,255,.24);
-  background:rgba(74,132,255,.08);
-  color:#a8c4ff;
-  font-size:12px;
-}
-.dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--brand);
-}
-.hero h1{
-  font-size:clamp(34px,5vw,72px);
-  line-height:1.08;
-  letter-spacing:0;
-  font-weight:900;
-  margin-bottom:18px;
-  background:linear-gradient(135deg,#ffffff 10%,#d9e7ff 70%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-.hero p{
-  max-width:660px;
-  margin:0 auto;
-  color:var(--muted);
-  font-size:clamp(15px,1.5vw,18px);
-}
-.hero-actions{
-  margin-top:34px;
-  display:flex;
-  justify-content:center;
-  gap:16px;
-  flex-wrap:wrap;
-}
-.btn-primary,
-.btn-secondary{
-  min-width:230px;
-  height:66px;
-  padding:0 26px;
-  border-radius:14px;
-  border:1px solid transparent;
-  cursor:pointer;
-  font-size:15px;
-  font-weight:800;
-}
-.btn-primary{
-  color:#fff;
-  background:linear-gradient(135deg,var(--brand),var(--brand-2));
-  box-shadow:0 18px 30px rgba(87,84,255,.18);
-}
-.btn-secondary{
-  color:#fff;
-  background:rgba(255,255,255,.02);
-  border-color:rgba(255,255,255,.12);
-}
-.hero-stats{
-  margin-top:42px;
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:18px;
-}
-.stat{
-  min-height:136px;
-  padding:28px 18px 22px;
-  border-radius:22px;
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.08);
-  text-align:center;
-}
-.stat-value{
-  font-size:56px;
-  line-height:1;
-  font-weight:900;
-  background:linear-gradient(135deg,var(--brand),#7652ff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-.stat-label{
-  margin-top:16px;
-  color:#9eabc6;
-  font-size:15px;
-}
-
-section{
-  padding:72px 24px;
-}
-.band{background:#09101d}
-.inner{
-  max-width:var(--max);
-  margin:0 auto;
-}
-.sec-kicker{
-  color:var(--brand);
-  font-size:12px;
-  letter-spacing:3px;
-  text-transform:uppercase;
-}
-.sec-title{
-  margin-top:14px;
-  font-size:clamp(28px,3.6vw,46px);
-  line-height:1.2;
-  font-weight:850;
-}
-.sec-copy{
-  margin-top:14px;
-  max-width:740px;
-  color:var(--muted);
-  font-size:16px;
-}
-.grid-3{
-  margin-top:38px;
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:18px;
-}
-.grid-2{
-  margin-top:38px;
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:18px;
-}
-.card{
-  padding:24px;
-  border-radius:22px;
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.08);
-}
-.card h3{
-  font-size:18px;
-  margin-bottom:10px;
-}
-.card p{
-  color:var(--muted);
-  font-size:14px;
-}
-.process{
-  margin-top:38px;
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:16px;
-}
-.step{
-  padding:22px 18px;
-  border-radius:20px;
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.08);
-  text-align:center;
-}
-.step-no{
-  width:42px;
-  height:42px;
-  margin:0 auto 14px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:14px;
-  font-weight:800;
-  background:linear-gradient(135deg,var(--brand),var(--brand-2));
-}
-.contact{
-  text-align:center;
-}
-.contact-form{
-  max-width:860px;
-  margin:32px auto 0;
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr)) auto;
-  gap:14px;
-}
-.contact-form input{
-  width:100%;
-  height:58px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.04);
-  color:#eef2ff;
-  padding:0 16px;
-}
-.contact-form button{
-  height:58px;
-  min-width:150px;
-  border:none;
-  border-radius:14px;
-  background:linear-gradient(135deg,var(--brand),var(--brand-2));
-  color:#fff;
-  font-weight:800;
-}
-footer{
-  padding:28px 24px 34px;
-  border-top:1px solid rgba(255,255,255,.06);
-  color:#8290ab;
-  text-align:center;
-  font-size:13px;
-}
-@media (max-width: 1120px){
-  .nav-inner{padding:14px 20px}
-  .nav-links{gap:12px 24px;font-size:13px}
-  .nav-cta{min-width:138px}
-  .hero-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .grid-3,.process{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .contact-form{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-
-@media (max-width: 768px){
-  nav{
-    position:sticky;
-    top:0;
-  }
-  .nav-inner{
-    padding:14px 14px 12px;
-    align-items:flex-start;
-    gap:0;
-    flex-wrap:wrap;
-  }
-  .brand{
-    max-width:calc(100% - 58px);
-    gap:10px;
-    align-items:flex-start;
-  }
-  .brand-mark{
-    width:40px;
-    height:40px;
-    flex-basis:40px;
-  }
-  .brand-top{
-    gap:7px;
-    align-items:center;
-  }
-  .brand-name{
-    font-size:17px;
-    line-height:1;
-  }
-  .brand-badge{
-    height:24px;
-    padding:0 8px;
-    font-size:11px;
-    border-radius:8px;
-  }
-  .brand-sub{
-    font-size:10px;
-    margin-top:6px;
-    color:#93a2bc;
-  }
-  .nav-menu-btn{
-    display:flex;
-    margin-left:auto;
-    width:42px;
-    height:42px;
-    flex-basis:42px;
-    border-radius:13px;
-  }
-  .nav-links,
-  .nav-cta{
-    display:none;
-    width:100%;
-  }
-  .nav-links{
-    padding-top:14px;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:0;
-  }
-  .nav-links a{
-    width:100%;
-    padding:12px 0;
-    border-bottom:1px solid rgba(255,255,255,.06);
-    font-size:15px;
-  }
-  .nav-cta{
-    min-width:0;
-    margin-top:12px;
-    height:52px;
-  }
-  .nav-toggle:checked ~ .nav-links,
-  .nav-toggle:checked ~ .nav-cta{
-    display:flex;
-  }
-  .nav-toggle:checked + .nav-menu-btn::before{
-    transform:translateY(6px) rotate(45deg);
-  }
-  .nav-toggle:checked + .nav-menu-btn span{
-    opacity:0;
-  }
-  .nav-toggle:checked + .nav-menu-btn::after{
-    transform:translateY(-6px) rotate(-45deg);
-  }
-  .hero{
-    padding:36px 14px 24px;
-  }
-  .hero-card{
-    max-width:100%;
-  }
-  .hero-badge{
-    margin-bottom:18px;
-    padding:8px 14px;
-    font-size:11px;
-  }
-  .hero h1{
-    font-size:24px;
-    line-height:1.18;
-    margin-bottom:16px;
-  }
-  .hero p{
-    max-width:100%;
-    font-size:13px;
-    line-height:1.72;
-    color:#a4b0c7;
-  }
-  .hero-actions{
-    margin-top:28px;
-    gap:16px;
-    flex-direction:column;
-  }
-  .btn-primary,
-  .btn-secondary{
-    width:100%;
-    min-width:0;
-    height:66px;
-    border-radius:18px;
-    font-size:15px;
-  }
-  .hero-stats{
-    grid-template-columns:1fr;
-    gap:18px;
-    margin-top:26px;
-  }
-  .stat{
-    min-height:0;
-    padding:24px 18px 22px;
-    border-radius:24px;
-  }
-  .stat-value{
-    font-size:42px;
-  }
-  .stat-label{
-    margin-top:12px;
-    font-size:13px;
-  }
-  section{
-    padding:52px 14px;
-  }
-  .sec-kicker{
-    letter-spacing:2px;
-  }
-  .sec-title{
-    font-size:20px;
-    line-height:1.35;
-  }
-  .sec-copy{
-    font-size:14px;
-    max-width:none;
-  }
-  .grid-3,
-  .grid-2,
-  .process,
-  .contact-form{
-    grid-template-columns:1fr;
-    gap:14px;
-  }
-  .card,
-  .step{
-    padding:20px 18px;
-    border-radius:18px;
-  }
-}
-
-@media (max-width: 480px){
-  .nav-inner{
-    padding:12px 12px 10px;
-  }
-  .brand{
-    max-width:calc(100% - 52px);
-  }
-  .brand-name{
-    font-size:16px;
-  }
-  .brand-badge{
-    height:23px;
-    padding:0 7px;
-    font-size:10px;
-  }
-  .brand-sub{
-    font-size:10px;
-  }
-  .nav-menu-btn{
-    width:40px;
-    height:40px;
-    flex-basis:40px;
-  }
-  .hero{
-    padding:34px 12px 20px;
-  }
-  .hero h1{
-    font-size:21px;
-  }
-  .hero p{
-    font-size:12px;
-  }
-  .hero-badge{
-    font-size:10px;
-    padding:7px 12px;
-  }
-  .btn-primary,
-  .btn-secondary{
-    height:64px;
-    font-size:14px;
-  }
-  .stat{
-    padding:22px 16px 20px;
-  }
-  .stat-value{
-    font-size:40px;
-  }
-  .stat-label{
-    font-size:12px;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能客服 - AI 助手</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-dark: #4f46e5;
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --user-bubble: linear-gradient(135deg, #6366f1, #8b5cf6);
+      --bot-bubble: #ffffff;
+      --shadow: 0 2px 15px rgba(0,0,0,0.08);
+      --radius: 18px;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 12px rgba(99,102,241,0.3);
+      position: relative;
+      z-index: 10;
+    }
+    
+    .header-avatar {
+      width: 42px;
+      height: 42px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      backdrop-filter: blur(4px);
+    }
+    
+    .header-info h1 {
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    
+    .header-info .status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+    
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    .status-dot.offline { background: #f87171; animation: none; }
+    .status-dot.busy { background: #fbbf24; }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.2); }
+    }
+    
+    .status-text {
+      color: rgba(255,255,255,0.9);
+      font-size: 12px;
+    }
+    
+    .header-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+    }
+    
+    .header-btn {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    
+    .header-btn:hover { background: rgba(255,255,255,0.25); }
+    
+    /* ===== INTENT BADGE ===== */
+    #intent-badge {
+      background: var(--card-bg);
+      padding: 8px 16px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    #intent-badge.show { display: flex; }
+    
+    .intent-tag {
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: white;
+    }
+    
+    /* ===== CHAT AREA ===== */
+    #chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+    }
+    
+    #chat-container::-webkit-scrollbar { width: 4px; }
+    #chat-container::-webkit-scrollbar-track { background: transparent; }
+    #chat-container::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+    
+    /* ===== MESSAGES ===== */
+    .message-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .message-row.user { flex-direction: row-reverse; }
+    
+    .msg-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .msg-avatar.bot {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+    }
+    
+    .msg-avatar.user {
+      background: linear-gradient(135deg, #f0f2f5, #e5e7eb);
+      color: #374151;
+    }
+    
+    .msg-content { max-width: 75%; }
+    
+    .bubble {
+      padding: 12px 16px;
+      border-radius: 18px;
+      line-height: 1.6;
+      font-size: 14px;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      box-shadow: var(--shadow);
+    }
+    
+    .message-row.bot .bubble {
+      background: var(--bot-bubble);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+    }
+    
+    .message-row.user .bubble {
+      background: var(--user-bubble);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .bubble strong { font-weight: 600; }
+    
+    .msg-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      padding: 0 4px;
+    }
+    
+    .message-row.user .msg-time { text-align: right; }
+    
+    /* ===== TYPING INDICATOR ===== */
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 12px 16px;
+      background: white;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      width: fit-content;
+      box-shadow: var(--shadow);
+    }
+    
+    .typing-indicator span {
+      width: 7px;
+      height: 7px;
+      background: #a5b4fc;
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+    
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-8px); }
+    }
+    
+    /* ===== QUICK REPLIES ===== */
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    .quick-btn {
+      background: white;
+      border: 1.5px solid #e0e7ff;
+      color: #6366f1;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    
+    .quick-btn:hover {
+      background: #6366f1;
+      color: white;
+      border-color: #6366f1;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+    }
+    
+    /* ===== ESCALATION CARD ===== */
+    .escalation-card {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 1px solid #f59e0b;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-top: 6px;
+    }
+    
+    .escalation-card h4 { color: #92400e; font-size: 14px; margin-bottom: 6px; }
+    .escalation-card p { color: #78350f; font-size: 13px; line-height: 1.5; }
+    
+    /* ===== SATISFACTION ===== */
+    .satisfaction-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      margin-top: 6px;
+    }
+    
+    .satisfaction-card h4 {
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .star-btn {
+      font-size: 26px;
+      cursor: pointer;
+      opacity: 0.3;
+      transition: all 0.2s;
+      border: none;
+      background: none;
+      padding: 4px;
+    }
+    
+    .star-btn:hover, .star-btn.active { opacity: 1; transform: scale(1.2); }
+    
+    .satisfaction-submitted {
+      text-align: center;
+      color: #10b981;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    /* ===== DATE DIVIDER ===== */
+    .date-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    
+    .date-divider::before, .date-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    
+    /* ===== INPUT AREA ===== */
+    .input-area {
+      background: var(--card-bg);
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .input-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    
+    #message-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1.5px solid transparent;
+      border-radius: 22px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+      max-height: 100px;
+      line-height: 1.5;
+      outline: none;
+      transition: border-color 0.2s;
+      color: var(--text);
+    }
+    
+    #message-input:focus { border-color: var(--primary-light); }
+    #message-input::placeholder { color: #9ca3af; }
+    
+    #send-btn {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.4);
+    }
+    
+    #send-btn:hover { transform: scale(1.08); box-shadow: 0 6px 16px rgba(99,102,241,0.5); }
+    #send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    
+    #send-btn svg { width: 18px; height: 18px; }
+    
+    .input-hints {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    
+    .hint-chip {
+      background: #f3f4f6;
+      border: none;
+      color: #6b7280;
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    
+    .hint-chip:hover { background: #e0e7ff; color: #6366f1; }
+    
+    /* ===== ESCALATED STATE ===== */
+    .escalated-banner {
+      background: linear-gradient(135deg, #fff7ed, #fed7aa);
+      border-top: 2px solid #f97316;
+      padding: 14px 16px;
+      text-align: center;
+      font-size: 13px;
+      color: #9a3412;
+    }
+    
+    .escalated-banner .icon { font-size: 20px; }
+    
+    /* ===== MARKDOWN RENDERING ===== */
+    .bubble .md-bold { font-weight: 600; }
+    .bubble .md-list { margin: 4px 0; }
+    .bubble .section { margin: 8px 0 4px; }
+    
+    /* ===== ADMIN LINK ===== */
+    .admin-link {
+      position: fixed;
+      bottom: 80px;
+      right: 16px;
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+      z-index: 100;
+    }
+    
+    .admin-link:hover { color: var(--primary); border-color: var(--primary); }
+  </style>
 </head>
 <body>
-<nav>
-  <div class="nav-inner">
-    <div class="brand">
-      <div class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M34 20H198L189 38H99L141 38L73 182H185L176 200H16L110 56H25L34 20Z" fill="#DF0A3A"/>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-avatar">🤖</div>
+  <div class="header-info">
+    <h1>智能客服助手</h1>
+    <div class="status">
+      <div class="status-dot" id="status-dot"></div>
+      <span class="status-text" id="status-text">在线服务中</span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="header-btn" onclick="newConversation()">🔄 新对话</button>
+    <a href="/admin" class="header-btn" style="text-decoration:none">📊 后台</a>
+  </div>
+</div>
+
+<!-- Intent Badge -->
+<div id="intent-badge">
+  <span>当前识别意图：</span>
+  <span id="intent-tag" class="intent-tag"></span>
+</div>
+
+<!-- Chat Messages -->
+<div id="chat-container"></div>
+
+<!-- Input Area / Escalated Banner -->
+<div id="footer-area">
+  <div class="input-area" id="input-area">
+    <div class="input-hints" id="hint-chips">
+      <button class="hint-chip" onclick="quickSend('如何查询我的订单？')">📦 查询订单</button>
+      <button class="hint-chip" onclick="quickSend('我想申请退款')">💰 申请退款</button>
+      <button class="hint-chip" onclick="quickSend('登录时遇到问题')">🔧 技术支持</button>
+      <button class="hint-chip" onclick="quickSend('转人工客服')">👤 转人工</button>
+    </div>
+    <div class="input-row">
+      <textarea id="message-input" placeholder="请输入您的问题..." rows="1"></textarea>
+      <button id="send-btn" onclick="sendMessage()" title="发送">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
         </svg>
-      </div>
-      <div class="brand-copy">
-        <div class="brand-top">
-          <div class="brand-name">FlowMind AI</div>
-          <span class="brand-badge">知量科技</span>
-        </div>
-        <div class="brand-sub">Konwlequant Technologies</div>
-      </div>
+      </button>
     </div>
-    <input id="nav-toggle" class="nav-toggle" type="checkbox" />
-    <label class="nav-menu-btn" for="nav-toggle" aria-label="打开导航菜单"><span></span></label>
-    <div class="nav-links">
-      <a href="#pain">痛点 / Pain Points</a>
-      <a href="#solutions">方案 / Solutions</a>
-      <a href="#clients">客群 / Clients</a>
-      <a href="#contact">联系 / Contact</a>
-    </div>
-    <a class="nav-cta" href="#contact">预约演示 / Demo</a>
   </div>
-</nav>
+</div>
 
-<section class="hero">
-  <div class="hero-wrap">
-    <div class="hero-card">
-      <div class="hero-badge"><span class="dot"></span>AI-Powered · 智能驱动流程革新</div>
-      <h1>用 AI 系统化解决政府与企业的流程管理难题</h1>
-      <p>FlowMind AI 以人工智能为核心引擎，深入连接审批、协同、数据分析与运营管理全链路，帮助组织识别瓶颈、提升效率、降低成本，并更快落地数字化升级。</p>
-      <div class="hero-actions">
-        <button class="btn-primary" onclick="location.href='#contact'">预约免费演示</button>
-        <button class="btn-secondary" onclick="location.href='#solutions'">查看解决方案</button>
-      </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <div class="stat-value">85%</div>
-          <div class="stat-label">平均流程效率提升</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">60%</div>
-          <div class="stat-label">人工操作成本下降</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">200+</div>
-          <div class="stat-label">落地项目</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">48h</div>
-          <div class="stat-label">快速接入</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<section id="pain" class="band">
-  <div class="inner">
-    <div class="sec-kicker">Pain Points</div>
-    <div class="sec-title">这些流程问题，是否也在拖慢你的组织效率？</div>
-    <div class="sec-copy">我们聚焦政府机构与企业在数字化升级中最常见的流程阻塞，用更低门槛的 AI 能力，帮助业务真正跑起来。</div>
-    <div class="grid-3">
-      <div class="card"><h3>审批链路过长</h3><p>多层审批、纸质流转和跨部门协同缓慢，导致事项推进周期长、响应速度低。</p></div>
-      <div class="card"><h3>数据孤岛严重</h3><p>系统之间互不连通，数据无法共享，管理层缺少统一视图和及时洞察。</p></div>
-      <div class="card"><h3>重复事务过多</h3><p>录入、核对、整理、制表等机械性工作过多，核心团队被低价值任务占用。</p></div>
-      <div class="card"><h3>业务响应偏慢</h3><p>缺少实时分析与预测支持，异常、反馈和变化很难快速转化为行动。</p></div>
-      <div class="card"><h3>合规风险难控</h3><p>规则变化频繁，人工审核难覆盖，潜在问题往往发现得太晚。</p></div>
-      <div class="card"><h3>数字化落地困难</h3><p>改造周期长、投入高、兼容复杂，很多项目上线后仍难形成有效结果。</p></div>
-    </div>
-  </div>
-</section>
+<script>
+// ============================================
+// 状态管理
+// ============================================
+let sessionId = null;
+let isTyping = false;
+let isEscalated = false;
+let currentIntent = 'unknown';
+let messageCount = 0;
 
-<section id="solutions">
-  <div class="inner">
-    <div class="sec-kicker">Solutions</div>
-    <div class="sec-title">围绕真实业务场景设计的 AI 解决方案</div>
-    <div class="sec-copy">从自动化执行到智能决策，我们提供可快速部署、可逐步接入、可持续扩展的一体化能力组合。</div>
-    <div class="grid-3">
-      <div class="card"><h3>智能流程自动化</h3><p>自动识别审批、报送、归档、同步等高频流程，让重复工作从人工转为系统执行。</p></div>
-      <div class="card"><h3>统一数据融合</h3><p>打通分散系统和业务数据，建立统一视图，为管理层提供实时分析和决策依据。</p></div>
-      <div class="card"><h3>AI 辅助决策</h3><p>结合行业知识和大模型能力，辅助完成分析、总结、问答、研判和建议生成。</p></div>
-      <div class="card"><h3>智能合规风控</h3><p>自动追踪规则变化，识别异常流程和潜在违规事项，帮助组织提前发现风险。</p></div>
-      <div class="card"><h3>经营增长助手</h3><p>整合客户、销售和市场数据，支持线索分析、策略建议、效果复盘与增长优化。</p></div>
-      <div class="card"><h3>低门槛快速接入</h3><p>支持标准接口与灵活配置，不必替换原有系统，也能完成关键流程智能升级。</p></div>
-    </div>
-  </div>
-</section>
+const intentColors = {
+  refund: '#ef4444',
+  order: '#3b82f6',
+  tech: '#8b5cf6',
+  account: '#f59e0b',
+  general: '#10b981',
+  unknown: '#6b7280'
+};
 
-<section class="band">
-  <div class="inner">
-    <div class="sec-kicker">Process</div>
-    <div class="sec-title">四步完成从诊断到落地</div>
-    <div class="process">
-      <div class="step"><div class="step-no">01</div><h3>流程诊断</h3><p>梳理现有链路，识别关键卡点与重复劳动。</p></div>
-      <div class="step"><div class="step-no">02</div><h3>方案定制</h3><p>结合组织目标，配置合适的自动化与 AI 能力。</p></div>
-      <div class="step"><div class="step-no">03</div><h3>快速部署</h3><p>对接原有系统与数据源，小步上线，优先覆盖高价值场景。</p></div>
-      <div class="step"><div class="step-no">04</div><h3>持续优化</h3><p>根据使用数据和业务反馈迭代，让效率提升稳定发生。</p></div>
-    </div>
-  </div>
-</section>
-<section id="clients">
-  <div class="inner">
-    <div class="sec-kicker">Clients</div>
-    <div class="sec-title">面向政府与企业的多场景服务能力</div>
-    <div class="grid-2">
-      <div class="card">
-        <h3>政府机构</h3>
-        <p>行政审批自动化、跨部门数据协同、政策合规审查、公共服务流程优化、辅助政策制定与效果评估。</p>
+// ============================================
+// 初始化
+// ============================================
+window.addEventListener('DOMContentLoaded', async () => {
+  await startSession();
+});
+
+async function startSession() {
+  try {
+    const res = await fetch('/api/session', { method: 'POST' });
+    const data = await res.json();
+    sessionId = data.sessionId;
+    
+    appendMessage('bot', data.welcomeMessage, { 
+      showQuickReplies: true,
+      quickReplies: ['查询订单状态', '申请退款', '技术问题求助', '咨询人工客服']
+    });
+  } catch (e) {
+    appendMessage('bot', '⚠️ 连接服务器失败，请刷新页面重试。');
+  }
+}
+
+// ============================================
+// 消息发送
+// ============================================
+async function sendMessage() {
+  const input = document.getElementById('message-input');
+  const text = input.value.trim();
+  
+  if (!text || isTyping) return;
+  
+  // 清除提示chips（首次发送后隐藏）
+  document.getElementById('hint-chips').style.display = 'none';
+  
+  input.value = '';
+  input.style.height = 'auto';
+  
+  appendMessage('user', text);
+  
+  if (isEscalated) {
+    appendMessage('bot', '您的对话已转接人工客服，请耐心等待。如需重新使用智能客服，请点击"新对话"。');
+    return;
+  }
+  
+  setTyping(true);
+  
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, message: text })
+    });
+    
+    const contentType = response.headers.get('Content-Type') || '';
+    
+    if (contentType.includes('text/event-stream')) {
+      // SSE 流式响应
+      await handleStreamResponse(response);
+    } else {
+      // JSON 响应（转人工或错误）
+      setTyping(false);
+      const data = await response.json();
+      
+      if (data.status === 'escalated') {
+        handleEscalation(data);
+      } else {
+        appendMessage('bot', data.message);
+      }
+    }
+  } catch (e) {
+    setTyping(false);
+    appendMessage('bot', '⚠️ 网络异常，请稍后重试。');
+  }
+}
+
+// ============================================
+// 流式响应处理
+// ============================================
+async function handleStreamResponse(response) {
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  
+  let msgEl = null;
+  let fullText = '';
+  
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      const text = decoder.decode(value);
+      const lines = text.split('\n');
+      
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        
+        try {
+          const data = JSON.parse(line.slice(6));
+          
+          if (data.type === 'chunk') {
+            if (!msgEl) {
+              setTyping(false);
+              msgEl = appendMessage('bot', '', { streaming: true });
+            }
+            fullText += data.chunk;
+            updateStreamingMessage(msgEl, fullText);
+          } else if (data.type === 'done') {
+            // 更新意图
+            if (data.intent && data.intent !== 'unknown') {
+              updateIntentBadge(data.intent, data.intentLabel);
+            }
+            messageCount = data.messageCount;
+            
+            // 在满意度评分前，先判断是否需要展示快速回复
+            if (messageCount > 2 && messageCount % 4 === 0 && !isEscalated) {
+              appendSatisfactionCard();
+            }
+          }
+        } catch (e) { /* 忽略解析错误 */ }
+      }
+    }
+  } catch (e) {
+    setTyping(false);
+    if (!msgEl) appendMessage('bot', '⚠️ 响应异常，请重试。');
+  }
+}
+
+// ============================================
+// DOM 操作
+// ============================================
+function appendMessage(role, content, opts = {}) {
+  const container = document.getElementById('chat-container');
+  const row = document.createElement('div');
+  row.className = `message-row ${role}`;
+  
+  const avatar = document.createElement('div');
+  avatar.className = `msg-avatar ${role}`;
+  avatar.textContent = role === 'bot' ? '🤖' : '👤';
+  
+  const msgContent = document.createElement('div');
+  msgContent.className = 'msg-content';
+  
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = renderMarkdown(content);
+  
+  if (opts.streaming) {
+    bubble.innerHTML = '<span class="cursor">▌</span>';
+  }
+  
+  const timeEl = document.createElement('div');
+  timeEl.className = 'msg-time';
+  timeEl.textContent = formatTime(new Date());
+  
+  msgContent.appendChild(bubble);
+  msgContent.appendChild(timeEl);
+  
+  row.appendChild(avatar);
+  row.appendChild(msgContent);
+  
+  // 快速回复按钮
+  if (opts.showQuickReplies && opts.quickReplies) {
+    const qr = document.createElement('div');
+    qr.className = 'quick-replies';
+    opts.quickReplies.forEach(q => {
+      const btn = document.createElement('button');
+      btn.className = 'quick-btn';
+      btn.textContent = q;
+      btn.onclick = () => quickSend(q);
+      qr.appendChild(btn);
+    });
+    msgContent.appendChild(qr);
+  }
+  
+  container.appendChild(row);
+  scrollToBottom();
+  
+  return bubble;
+}
+
+function updateStreamingMessage(el, text) {
+  el.innerHTML = renderMarkdown(text) + '<span class="cursor blink">▌</span>';
+  scrollToBottom();
+}
+
+function setTyping(show) {
+  isTyping = show;
+  document.getElementById('send-btn').disabled = show;
+  
+  const existing = document.getElementById('typing-row');
+  if (existing) existing.remove();
+  
+  if (show) {
+    const container = document.getElementById('chat-container');
+    const row = document.createElement('div');
+    row.id = 'typing-row';
+    row.className = 'message-row bot';
+    row.innerHTML = `
+      <div class="msg-avatar bot">🤖</div>
+      <div class="typing-indicator">
+        <span></span><span></span><span></span>
+      </div>`;
+    container.appendChild(row);
+    scrollToBottom();
+  }
+}
+
+function updateIntentBadge(intent, intentLabel) {
+  currentIntent = intent;
+  const badge = document.getElementById('intent-badge');
+  const tag = document.getElementById('intent-tag');
+  
+  badge.classList.add('show');
+  tag.textContent = `${intentLabel.icon} ${intentLabel.text}`;
+  tag.style.background = intentLabel.color;
+}
+
+function handleEscalation(data) {
+  isEscalated = true;
+  
+  // 更新头部状态
+  document.getElementById('status-dot').className = 'status-dot busy';
+  document.getElementById('status-text').textContent = '转接人工中';
+  
+  const escalateMsg = data.message || '正在为您转接人工客服...';
+  const bubble = appendMessage('bot', escalateMsg);
+  
+  // 追加转人工卡片
+  const card = document.createElement('div');
+  card.className = 'escalation-card';
+  card.innerHTML = `
+    <h4>🧑‍💼 转人工客服</h4>
+    <p>人工客服工作时间：周一至周五 9:00-18:00<br>
+    非工作时间可留言，我们会尽快回复您。<br>
+    <strong>等待时间：约 3-5 分钟</strong></p>`;
+  bubble.parentNode.appendChild(card);
+  
+  // 替换输入区
+  const inputArea = document.getElementById('input-area');
+  inputArea.innerHTML = `
+    <div class="escalated-banner">
+      <div class="icon">🧑‍💼</div>
+      <div style="margin-top:4px">已转接人工客服，请耐心等待</div>
+      <div style="margin-top:4px; opacity:0.7">如需重新咨询 <a href="javascript:newConversation()" style="color:#9a3412;font-weight:600">开启新对话</a></div>
+    </div>`;
+  
+  scrollToBottom();
+}
+
+function appendSatisfactionCard() {
+  const container = document.getElementById('chat-container');
+  const row = document.createElement('div');
+  row.className = 'message-row bot';
+  row.innerHTML = `
+    <div class="msg-avatar bot">🤖</div>
+    <div class="msg-content">
+      <div class="satisfaction-card" id="sat-card">
+        <h4>😊 问题解决了吗？请给本次服务评分</h4>
+        <div class="stars">
+          ${[1,2,3,4,5].map(i => `
+            <button class="star-btn" data-score="${i}" onclick="submitSatisfaction(${i})">⭐</button>
+          `).join('')}
+        </div>
       </div>
-      <div class="card">
-        <h3>企业组织</h3>
-        <p>供应链和采购流程优化、经营数据实时分析、客户管理与营销自动化、财务人力流程数字化、风险监控增强。</p>
-      </div>
-    </div>
-  </div>
-</section>
+    </div>`;
+  container.appendChild(row);
+  scrollToBottom();
+}
 
-<section id="contact" class="band">
-  <div class="inner contact">
-    <div class="sec-kicker">Contact</div>
-    <div class="sec-title">现在开始，用 AI 重塑你的流程效率</div>
-    <div class="sec-copy">留下信息，我们将在 48 小时内与你联系，提供适合你业务场景的演示建议。</div>
-    <div class="contact-form">
-      <input type="text" placeholder="姓名" />
-      <input type="text" placeholder="企业或机构名称" />
-      <input type="email" placeholder="电子邮箱" />
-      <button type="button">预约演示</button>
-    </div>
-  </div>
-</section>
+async function submitSatisfaction(score) {
+  try {
+    await fetch(`/api/chat/${sessionId}/satisfaction`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ score })
+    });
+  } catch (e) {}
+  
+  const card = document.getElementById('sat-card');
+  if (card) {
+    const stars = '⭐'.repeat(score);
+    card.innerHTML = `<div class="satisfaction-submitted">✅ 感谢您的评价！${stars}</div>`;
+  }
+}
 
-<footer>
-  © 2025 FlowMind AI · Konwlequant Technologies · contact@flowmind.ai
-</footer>
+// ============================================
+// 工具函数
+// ============================================
+function quickSend(text) {
+  const input = document.getElementById('message-input');
+  input.value = text;
+  sendMessage();
+}
+
+function newConversation() {
+  if (confirm('确定开启新对话？当前对话记录将被保存。')) {
+    location.reload();
+  }
+}
+
+function scrollToBottom() {
+  const container = document.getElementById('chat-container');
+  requestAnimationFrame(() => {
+    container.scrollTop = container.scrollHeight;
+  });
+}
+
+function formatTime(date) {
+  return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+}
+
+function renderMarkdown(text) {
+  if (!text) return '';
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^#{1,3}\s(.+)$/gm, '<div class="section"><strong>$1</strong></div>')
+    .replace(/^[•\-]\s(.+)$/gm, '<div class="md-list">• $1</div>')
+    .replace(/^\d+\)\s(.+)$/gm, '<div class="md-list">$&</div>')
+    .replace(/\n/g, '<br>');
+}
+
+// ============================================
+// 输入框自动调整高度
+// ============================================
+const textarea = document.getElementById('message-input');
+textarea.addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+});
+
+textarea.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+// ============================================
+// 光标闪烁样式
+// ============================================
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  .blink { animation: blink 0.8s infinite; }
+`;
+document.head.appendChild(style);
+</script>
 </body>
 </html>
